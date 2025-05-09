@@ -5,46 +5,37 @@ import numpy as np
 CITY_DATA = { 'chicago': 'chicago.csv',
               'new york city': 'new_york_city.csv',
               'washington': 'washington.csv' }
+def get_valid_input(prompt, valid_options):
+    """Helper function to get validated input from the user."""
+    while True:
+        user_input = input(prompt).strip().lower()
+        if user_input in valid_options:
+            return user_input
+        else:
+            print(f"Invalid input. Please choose from: {', '.join([opt.title() for opt in valid_options])}.")
+
 
 def get_filters():
     """
     Prompts the user to specify a city, month, and day for analysis.
 
     Returns:
-        (str) city - name of the city to analyze
-        (str) month - name of the month to filter by, or "all" to apply no month filter
-        (str) day - name of the day of week to filter by, or "all" to apply no day filter
+        (str) city, (str) month, (str) day
     """
-    print('Hello! Let\'s explore some US bikeshare data!')
-    # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    valid_cities = ['chicago', 'new york city', 'washington']
-    while True:
-        city = input("Enter a city (Chicago, New York City, Washington): ").strip().lower()
-        if city in valid_cities:
-            break
-        else:
-            print("Invalid input. Please enter one of the following cities: Chicago, New York City, Washington.")
+    print("Hello! Let’s explore some US bikeshare data!")
 
-    # Get user input for month
-    valid_months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
-    while True:
-        month = input("Enter a month (all, January, February, ..., June): ").strip().lower()
-        if month in valid_months:
-            break
-        else:
-            print("Invalid input. Please enter a valid month between January and June, or 'all'.")
+    city = get_valid_input("Enter a city (Chicago, New York City, Washington): ",
+                           ['chicago', 'new york city', 'washington'])
 
-    # Get user input for day of week
-    valid_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']
-    while True:
-        day = input("Enter a day of the week (all, Monday, Tuesday, ..., Sunday): ").strip().lower()
-        if day in valid_days:
-            break
-        else:
-            print("Invalid input. Please enter a valid day of the week or 'all'.")
+    month = get_valid_input("Enter a month (all, January, February, ..., June): ",
+                            ['january', 'february', 'march', 'april', 'may', 'june', 'all'])
+
+    day = get_valid_input("Enter a day of the week (all, Monday, Tuesday, ..., Sunday): ",
+                          ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all'])
 
     print('-'*40)
     return city, month, day
+
 
 
 def load_data(city, month, day):
@@ -60,12 +51,11 @@ def load_data(city, month, day):
     """
     df = pd.read_csv(CITY_DATA[city])
 
-    # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-
-    # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.day_name()
+    df['hour'] = df['Start Time'].dt.hour
+
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
@@ -102,18 +92,18 @@ def time_stats(df):
 
     # TO DO: display the most common month
     
-    df['month'] = df['Start Time'].dt.month
+    
     popular_month = df['month'].mode()[0]
     print(f"the most common month: {popular_month}")
     
     # TO DO: display the most common day of week
-    df['day_of_week'] = df['Start Time'].dt.day_name()
+    
     popular_week_day = df['day_of_week'].mode()[0]
     print(f"the most common day of week: {popular_week_day}")
       
 
     # TO DO: display the most common start hour
-    df['hour']=df['Start Time'].dt.hour
+    
     popular_hour = df['hour'].mode()[0]
     print(f"the most common start hour: {popular_hour}")
     
