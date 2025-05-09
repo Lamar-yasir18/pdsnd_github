@@ -28,5 +28,5 @@ Users are also able to view raw data in chunks of 5 rows upon request.
 - Udacity’s Programming for Data Science with Python Nanodegree  
 - [Pandas documentation](https://pandas.pydata.org/docs/)  
 - [Stack Overflow](https://stackoverflow.com/) for code troubleshooting  
-- Any additional blog posts or repositories you referenced (add here)
+
 
