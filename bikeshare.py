@@ -60,12 +60,11 @@ def load_data(city, month, day):
     """
     df = pd.read_csv(CITY_DATA[city])
 
-    # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-
-    # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.day_name()
+    df['hour'] = df['Start Time'].dt.hour
+
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
@@ -102,18 +101,18 @@ def time_stats(df):
 
     # TO DO: display the most common month
     
-    df['month'] = df['Start Time'].dt.month
+    
     popular_month = df['month'].mode()[0]
     print(f"the most common month: {popular_month}")
     
     # TO DO: display the most common day of week
-    df['day_of_week'] = df['Start Time'].dt.day_name()
+    
     popular_week_day = df['day_of_week'].mode()[0]
     print(f"the most common day of week: {popular_week_day}")
       
 
     # TO DO: display the most common start hour
-    df['hour']=df['Start Time'].dt.hour
+    
     popular_hour = df['hour'].mode()[0]
     print(f"the most common start hour: {popular_hour}")
     
